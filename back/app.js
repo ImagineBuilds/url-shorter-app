@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const errorHandler = require("./middleware/errorHandler");
+const shortUrlRouter = require("./routers/shortUrlRoute");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -14,9 +15,11 @@ app.get("/", function (req, res) {
   res.sendFile(path.resolve("./front/index.html"));
 });
 
+app.use("/api/shorturl/", shortUrlRouter);
+
+app.use(errorHandler);
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
 });
-
-app.use(errorHandler);
 module.exports = app;
