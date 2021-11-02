@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 
 class DataBase {
   constructor() {
@@ -11,7 +12,22 @@ class DataBase {
       let info = fs.readFileSync(`./back/DB/${shortUrlId}.json`);
       return JSON.parse(info.toString());
     } catch (error) {
-      return { message: "short url does not exsits" };
+      return { error: 403, message: "short url does not exsits" };
+    }
+  }
+
+  static urlRedirectEntry(urlId) {
+    try {
+      let info = DataBase.getInfo(urlId);
+      if (info.error === undefined) {
+        info.redirectCount += 1;
+        fs.writeFileSync(`./back/DB/${urlId}.json`, JSON.stringify(info));
+        return true;
+      } else {
+        throw { error: 403, message: "short url does not exsits" };
+      }
+    } catch (error) {
+      return error;
     }
   }
 
@@ -22,12 +38,15 @@ class DataBase {
   generateShortUrl(full_URL) {
     let url_id = this.#getUniqueShorturlID();
     if (url_id === false) {
-      return { message: "Could not read from DB / Max capacity of short urls" };
+      return {
+        error: 402,
+        message: "Could not read from DB / Max capacity of short urls",
+      };
     }
     if (this.#createUrlShortFile(url_id, full_URL)) {
       return url_id;
     } else {
-      return { message: "Could not write to DB" };
+      return { error: 402, message: "Could not write to DB" };
     }
   }
 
@@ -114,6 +133,4 @@ class DataBase {
   }
 }
 
-let x = new DataBase();
-console.log(x.generateShortUrl("URL"));
 module.exports = DataBase;
