@@ -2,26 +2,35 @@ const fs = require("fs");
 const path = require("path");
 
 class DataBase {
-  constructor() {
-    // ! Max capacity of short urls
-    this._MAX_SHORT_URLS = 10000;
+  // ! Max capacity of short urls
+  #_MAX_SHORT_URLS = 10000;
+  #DB_PATH = "./back/DB";
+  constructor() {}
+
+  get DB_PATH() {
+    return this.#DB_PATH;
   }
 
-  static getInfo(shortUrlId) {
+  get _MAX_SHORT_URLS() {
+    return this.#_MAX_SHORT_URLS;
+  }
+
+  getInfo(shortUrlId) {
     try {
-      let info = fs.readFileSync(`./back/DB/${shortUrlId}.json`);
+      let info = fs.readFileSync(`${this.DB_PATH}/${shortUrlId}.json`);
       return JSON.parse(info.toString());
     } catch (error) {
+      console.log(error);
       return { error: 403, message: "short url does not exsits" };
     }
   }
 
-  static urlRedirectEntry(urlId) {
+  urlRedirectEntry(urlId) {
     try {
       let info = DataBase.getInfo(urlId);
       if (info.error === undefined) {
         info.redirectCount += 1;
-        fs.writeFileSync(`./back/DB/${urlId}.json`, JSON.stringify(info));
+        fs.writeFileSync(`${this.DB_PATH}/${urlId}.json`, JSON.stringify(info));
         return true;
       } else {
         throw { error: 403, message: "short url does not exsits" };
@@ -58,7 +67,7 @@ class DataBase {
   #createUrlShortFile(urlId, full_URL) {
     try {
       fs.appendFileSync(
-        `./back/DB/${urlId}.json`,
+        `${this.DB_PATH}/${urlId}.json`,
         JSON.stringify(this.#setUrlJSON(full_URL, urlId))
       );
       return true;

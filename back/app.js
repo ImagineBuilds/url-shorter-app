@@ -8,6 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(express.json());
 
 app.use("/", express.static(path.resolve("./front"))); // serve main path as static dir
 app.get("/", function (req, res) {

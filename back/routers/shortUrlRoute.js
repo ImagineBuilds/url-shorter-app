@@ -9,13 +9,13 @@ const DB = new DataBase();
  */
 
 /**
- * * Opens the right page
+ * * Redirect base on short url ID
  */
 router.get("/:urlid", (req, res, next) => {
   try {
-    let urlInfo = DataBase.getInfo(req.params.urlid);
+    let urlInfo = DB.getInfo(req.params.urlid);
     if (urlInfo.error === undefined) {
-      DataBase.urlRedirectEntry(req.params.urlid);
+      DB.urlRedirectEntry(req.params.urlid);
       return res.redirect(urlInfo.originalUrl);
     } else {
       throw urlInfo;
@@ -30,7 +30,7 @@ router.get("/:urlid", (req, res, next) => {
  */
 router.get("/info/:urlid", (req, res, next) => {
   try {
-    let urlInfo = DataBase.getInfo(req.params.urlid);
+    let urlInfo = DB.getInfo(req.params.urlid);
     if (urlInfo.error === undefined) {
       res.json(urlInfo);
     } else {
@@ -42,8 +42,20 @@ router.get("/info/:urlid", (req, res, next) => {
 });
 
 /**
- * * Sends back shorter URL
+ * * Sends back shorter URL (shorturl_ID)
  */
-router.get("/", (req, res, next) => {});
+router.post("/", (req, res, next) => {
+  try {
+    let url = req.body.url;
+    let shorturl_ID = DB.generateShortUrl(url);
+    if (typeof shorturl_ID !== "object") {
+      res.json({ shorturlId: shorturl_ID });
+    } else {
+      throw shorturl_ID;
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
