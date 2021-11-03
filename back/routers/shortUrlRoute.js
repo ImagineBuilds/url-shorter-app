@@ -27,14 +27,13 @@ router.post("/custom", (req, res, next) => {
 });
 
 /**
- * * Redirect base on short url ID
+ *  * Generate new url short
  */
-router.get("/:urlid", (req, res, next) => {
+router.get("/info/:urlid", (req, res, next) => {
   try {
     let urlInfo = DB.getInfo(req.params.urlid);
     if (urlInfo.error === undefined) {
-      DB.urlRedirectEntry(req.params.urlid);
-      return res.redirect(urlInfo.originalUrl);
+      res.json(urlInfo);
     } else {
       throw urlInfo;
     }
@@ -44,13 +43,14 @@ router.get("/:urlid", (req, res, next) => {
 });
 
 /**
- *  * Generate new url short
+ * * Redirect base on short url ID
  */
-router.get("/info/:urlid", (req, res, next) => {
+router.get("/:urlid", (req, res, next) => {
   try {
     let urlInfo = DB.getInfo(req.params.urlid);
     if (urlInfo.error === undefined) {
-      res.json(urlInfo);
+      DB.urlRedirectEntry(req.params.urlid);
+      return res.redirect(urlInfo.originalUrl);
     } else {
       throw urlInfo;
     }

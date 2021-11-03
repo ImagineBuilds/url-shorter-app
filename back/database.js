@@ -29,6 +29,7 @@ class DataBase {
       let info = this.getInfo(urlId);
       if (info.error === undefined) {
         info.redirectCount += 1;
+        info.redirectEntriesLog.push(new Date());
         fs.writeFileSync(`${this.DB_PATH}/${urlId}.json`, JSON.stringify(info));
         return true;
       } else {
@@ -58,6 +59,11 @@ class DataBase {
     }
   }
 
+  /**
+   * @param {string} full_URL - original URL given by client
+   * @param {string} customShort - custom url short name
+   * * Returns the end point of the short url (name of the file in DB)
+   */
   generateCustomShortUrl(full_URL, customShort) {
     if (!this.#isDuplicate(customShort)) {
       if (this.#createUrlShortFile(undefined, full_URL, customShort)) {
@@ -97,6 +103,7 @@ class DataBase {
   #setUrlJSON(full_URL, shorturlId, counter = 0, creationDate = new Date()) {
     return {
       redirectCount: counter,
+      redirectEntriesLog: [],
       creationDate: this.#dateFormater(creationDate),
       originalUrl: full_URL,
       "shorturl-id": shorturlId,

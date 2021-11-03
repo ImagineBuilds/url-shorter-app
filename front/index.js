@@ -2,10 +2,10 @@
 // ==== Server requests =========
 // ==============================
 
-async function redirect() {
+async function getInfo() {
   try {
-    let response = await axios.get("http://localhost:3000/api/shorturl/1");
-    console.log(response.data);
+    let response = await axios.get("http://localhost:3000/api/shorturl/info/1");
+    return response.data;
   } catch (error) {
     console.log(error);
   }
@@ -54,7 +54,7 @@ async function onActivateClick() {
   let url = document.querySelector("#url").value;
   let shortUrl = await getShortUrl(url);
   document.querySelector("#result").value =
-    "http://localhost:300/api/shorturl/" + shortUrl;
+    "http://localhost:3000/api/shorturl/" + shortUrl;
 }
 function onCopyClick() {
   let resultInput = document.querySelector("#result");
@@ -69,5 +69,12 @@ async function onActivateCustomClick() {
   let custom = document.querySelector("#castonShortUrlInput").value;
   let short = await getCustomShortUrl(url, custom);
   document.querySelector("#resultCustom").value =
-    "http://localhost:300/api/shorturl/" + short;
+    "http://localhost:3000/api/shorturl/" + short;
 }
+
+async function f() {
+  let obj = await getInfo();
+  console.log(obj);
+}
+
+f();
