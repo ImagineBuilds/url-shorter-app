@@ -9,6 +9,24 @@ const DB = new DataBase();
  */
 
 /**
+ * * Sends back shorter URL Custom (shorturl_Name)
+ */
+router.post("/custom", (req, res, next) => {
+  try {
+    let url = req.body.url;
+    let custom = req.body.custom;
+    let shorturl_Name = DB.generateCustomShortUrl(url, custom);
+    if (typeof shorturl_Name !== "object") {
+      res.json({ custom: shorturl_Name });
+    } else {
+      throw shorturl_Name;
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
  * * Redirect base on short url ID
  */
 router.get("/:urlid", (req, res, next) => {

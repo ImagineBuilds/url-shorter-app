@@ -20,14 +20,13 @@ class DataBase {
       let info = fs.readFileSync(`${this.DB_PATH}/${shortUrlId}.json`);
       return JSON.parse(info.toString());
     } catch (error) {
-      console.log(error);
       return { error: 403, message: "short url does not exsits" };
     }
   }
 
   urlRedirectEntry(urlId) {
     try {
-      let info = DataBase.getInfo(urlId);
+      let info = this.getInfo(urlId);
       if (info.error === undefined) {
         info.redirectCount += 1;
         fs.writeFileSync(`${this.DB_PATH}/${urlId}.json`, JSON.stringify(info));
@@ -59,15 +58,24 @@ class DataBase {
     }
   }
 
+  generateCustomShortUrl(full_URL, customShort) {
+    if (this.#createUrlShortFile(undefined, full_URL, customShort)) {
+      return customShort;
+    } else {
+      return { error: 402, message: "Could not write to DB" };
+    }
+  }
+
   /**
    * @param {string} full_URL - original URL given by client
    * @param {number} urlId - the short url id
    * * Create the file for the url short id
    */
-  #createUrlShortFile(urlId, full_URL) {
+  #createUrlShortFile(urlId, full_URL, custom = undefined) {
     try {
+      let fileName = custom || urlId;
       fs.appendFileSync(
-        `${this.DB_PATH}/${urlId}.json`,
+        `${this.DB_PATH}/${fileName}.json`,
         JSON.stringify(this.#setUrlJSON(full_URL, urlId))
       );
       return true;
@@ -99,7 +107,10 @@ class DataBase {
     try {
       let shortUrls_Ids = this.#getShortUrlsArray();
       let id_counter = 1;
-      while (id_counter < this._MAX_SHORT_URLS) {
+      while (
+        id_counter < this._MAX_SHORT_URLS ||
+        shortUrls_Ids.length >= this._MAX_SHORT_URLS
+      ) {
         let index = shortUrls_Ids.indexOf(id_counter.toString());
         if (index === -1) {
           return id_counter;

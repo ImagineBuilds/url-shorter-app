@@ -6,12 +6,12 @@
   grid-row-gap: 0px;
 }
 body {
-  background-color: #f3f3f3;
+  background-color: #f9f9f9;
 }
 .div1 {
   padding: 15px;
   background-color: #d8d8d8;
-  height: 63px;
+  height: 35%;
   margin-left: -10px;
   margin-right: -10px;
   margin-top: -10px;
@@ -19,7 +19,7 @@ body {
   grid-area: 1 / 1 / 2 / 6;
 }
 .div2 {
-  height: 130%;
+  height: 115%;
   background-color: white;
   border: gray 2px solid;
   border-radius: 10px;
@@ -38,10 +38,15 @@ body {
   background-color: #b0b0b0;
   left: 0px;
   bottom: 0px;
-  height: 120px;
+  height: 10%;
   grid-area: 5 / 1 / 6 / 6;
 }
 .div6 {
+  height: 100%;
+  margin-top: 50px;
+  background-color: white;
+  border: gray 2px solid;
+  border-radius: 10px;
   grid-area: 3 / 2 / 4 / 5;
 }
 .div7 {
@@ -89,7 +94,7 @@ body {
 }
 .standartButton {
   border: none;
-  padding: 6px 16px;
+  padding: 5px 16px;
   border-radius: 4px;
   color: white;
   background-color: rgb(111, 111, 255);
@@ -97,4 +102,24 @@ body {
 }
 .standartButton:hover {
   box-shadow: 0px 0px 4px 1px grey;
+}
+.urlInputCastom {
+  width: 30%;
+  border-radius: 5px;
+  border: black 1px solid;
+  height: 18px;
+  transition: border 0.35s ease-in-out;
+  transition: box-shadow 0.35s ease-in-out;
+}
+.urlInputCastom:focus {
+  outline: none;
+  border: rgb(116, 170, 204) 1px solid;
+  box-shadow: 0px 0px 4px 1px grey;
+}
+.inputDivCastom {
+  text-align: center;
+  /* margin: auto; */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

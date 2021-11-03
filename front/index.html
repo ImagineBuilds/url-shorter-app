@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./styles/styles.css">
     <script src="./index.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <div class="parent">
@@ -24,14 +25,30 @@
                 <button type="button" id="activate" class="standartButton">activate</button>
                 <br><br>
                 <label class="inputUrlLabel">Shorter</label>
-                <input type="text" class="urlInput" id="result">
+                <input type="text" class="urlInput" id="result" >
                 <button type="button" id="copyToClip" class="standartButton">Copy to clip</button>
             </div>                                
         </div>
         <div class="div3"> </div>
         <div class="div4"> </div>
         <div class="div5"> </div>
-        <div class="div6"> </div>
+        <div class="div6"> 
+            <div class="inputDivCustom">
+                <h2 class="enterURL">Create Custom URL</h2>  
+                <br>
+                <label class="inputUrlLabel">URL</label>
+                <input type="text" id="urlCustomInput" class="urlInputCustom">   
+                <br><br>
+                <label class="inputUrlLabel">Custom endpoint</label>
+                <input type="text" id="castonShortUrlInput" class="urlInputCustom">            
+                <button type="button" id="activateCustom" class="standartButton">activate</button> 
+                <br><br>               
+                <label class="inputUrlLabel">Shorter</label>
+                <input type="text" class="urlResultCustom" id="resultCustom" >
+                <button type="button" id="copyToClip" class="standartButton">Copy to clip</button>
+                
+            </div>
+        </div>
         <div class="div7"> </div>
         </div>
 </body>
