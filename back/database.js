@@ -59,11 +59,14 @@ class DataBase {
   }
 
   generateCustomShortUrl(full_URL, customShort) {
-    if (this.#createUrlShortFile(undefined, full_URL, customShort)) {
-      return customShort;
-    } else {
-      return { error: 402, message: "Could not write to DB" };
+    if (!this.#isDuplicate(customShort)) {
+      if (this.#createUrlShortFile(undefined, full_URL, customShort)) {
+        return customShort;
+      } else {
+        return { error: 402, message: "Could not write to DB" };
+      }
     }
+    return { error: 405, message: "Custom name already exsits" };
   }
 
   /**
@@ -121,6 +124,14 @@ class DataBase {
     } catch (error) {
       return { return: false, message: error };
     }
+  }
+
+  #isDuplicate(customShort) {
+    let shorturlArray = this.#getShortUrlsArray();
+    if (shorturlArray.indexOf(customShort) === -1) {
+      return false;
+    }
+    return true;
   }
 
   /**
