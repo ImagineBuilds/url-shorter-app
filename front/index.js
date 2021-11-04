@@ -74,10 +74,12 @@ async function onActivateClick() {
   try {
     resetErrors();
     let url = document.querySelector("#url").value;
-    let shortUrl = await getShortUrl(url);
-    document.querySelector("#result").value = "";
-    document.querySelector("#result").value =
-      "http://localhost:3000/api/shorturl/" + shortUrl;
+    if (isUrlValid(url)) {
+      let shortUrl = await getShortUrl(url);
+      document.querySelector("#result").value = "";
+      document.querySelector("#result").value =
+        "http://localhost:3000/api/shorturl/" + shortUrl;
+    }
   } catch (error) {
     if (typeof error === "string") {
       document.querySelector("#urlError").textContent = "Connection problem";
@@ -101,16 +103,18 @@ async function onActivateCustomClick() {
   try {
     resetErrors();
     let url = document.querySelector("#urlCustomInput").value;
-    let custom = document.querySelector("#castonShortUrlInput").value;
-    let short = await getCustomShortUrl(url, custom);
-    document.querySelector("#resultCustom").value = "";
-    document.querySelector("#resultCustom").value =
-      "http://localhost:3000/api/shorturl/" + short;
+    if (isUrlValid(url)) {
+      let custom = document.querySelector("#castonShortUrlInput").value;
+      let short = await getCustomShortUrl(url, custom);
+      document.querySelector("#resultCustom").value = "";
+      document.querySelector("#resultCustom").value =
+        "http://localhost:3000/api/shorturl/" + short;
+    }
   } catch (error) {
     if (typeof error === "string") {
       document.querySelector("#customError").textContent = "Connection problem";
     } else {
-      document.querySelector("#customError").textContent = short.message;
+      document.querySelector("#customError").textContent = error.message;
     }
   }
 }
@@ -127,6 +131,7 @@ async function onStatisticsMonthClick() {
     let yearLogsArray = getLogsByYear(shortUrlInfo.redirectEntriesLog, year);
     let monthName = date.toLocaleString("en-US", { month: "long" });
     let header = `Entries for year ${year} in ${monthName}`;
+    document.querySelector(".div8").classList.add("visible");
     createChart(header, getColumnsDays, yearLogsArray, year, month);
   } catch (error) {
     if (typeof error === "string") {
@@ -147,6 +152,7 @@ async function onStatisticsYearClick() {
     let year = document.querySelector("#satisticInputYear").value;
     let yearLogArray = getLogsByYear(shortUrlInfo.redirectEntriesLog, year);
     let header = `Entries for year ${year}`;
+    document.querySelector(".div8").classList.add("visible");
     createChart(header, getColumnsMonth, yearLogArray, year);
   } catch (error) {
     if (typeof error === "string") {
@@ -161,6 +167,28 @@ async function onStatisticsYearClick() {
 // ==============================
 // ====== Help Functions ========
 // ==============================
+
+function isUrlValid(url) {
+  if (url === "") {
+    throw { message: "Url cant be null" };
+  } else if (url.length > 800) {
+    throw { message: "Url is too long" };
+  } else {
+    const pattern = new RegExp(
+      "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
+        "((\\d{1,3}\\.){3}\\d{1,3}))" +
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
+        "(\\?[;&a-z\\d%_.~+=-]*)?" +
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    );
+    if (pattern.test(url)) {
+      return true;
+    }
+    throw { message: "Url is not valid" };
+  }
+}
 
 function resetErrors() {
   document.querySelector("#statistisError").textContent = "";

@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="./styles/styles.css">    
     <script src="./index.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>    
 </head>
-<body>
-    <div class="parent">
+<body>     
+    <div class="parent">        
         <div class="div1"> 
             <img src="./images/logo.png" alt="Logo" class="img">
             <h2 class="headerH">Daniel's URL Shorter</h2>
@@ -28,7 +28,7 @@
                 <tr>
                     <td class="labelShorter"><label class="inputUrlLabel">Shorter</label></td>
                     <td><input type="text" class="urlInput" id="result" ></td>
-                    <td><button type="button" id="copyToClip" class="standartButton">Copy to clip</button></td>
+                    <td><button type="button" id="copyToClip" value="copy" class="standartButton">Copy to clip</button></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -56,7 +56,7 @@
                     <tr>
                         <td><label class="inputUrlLabel">Shorter</label></td>
                         <td><input type="text" class="urlInputCustom" id="resultCustom" ></td>
-                        <td><button type="button" id="copyToClipCustom" class="standartButton">Copy to clip</button></td>
+                        <td><button type="button" id="copyToClipCustom" value="copy" class="standartButton">Copy to clip</button></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -93,8 +93,9 @@
                 </table>                   
             </div>            
         </div>
-        <div class="div8"><div id="chartContainer" style="height: 200px; width: 90%;position:relative;margin: auto;margin-top: 10px;"></div>  </div>
-        
-        </div>
+        <div class="div8 hiiden">
+            <div id="chartContainer" style="height: 200px; width: 90%;margin: auto;margin-top: 10px; z-index:-1"></div>  
+        </div>        
+    </div>        
 </body>
 </html>
