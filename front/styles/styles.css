@@ -60,7 +60,21 @@ body {
   grid-area: 2 / 2 / 3 / 5;
 }
 .div7 {
-  grid-area: 4 / 2 / 5 / 5;
+  height: 90%;
+  /* margin-top: 50px; */
+  background-color: white;
+  border: gray 2px solid;
+  border-radius: 10px;
+  margin-top: 6%;
+  grid-area: 3 / 2 / 4 / 5;
+}
+.div8 {
+  height: 95%;
+  margin-top: 40px;
+  background-color: white;
+  border: gray 2px solid;
+  border-radius: 10px;
+  grid-area: 4 / 2 / 4 / 5;
 }
 .headerH {
   margin-left: 80px;

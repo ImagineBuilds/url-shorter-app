@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./styles/styles.css">
     <script src="./index.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>    
 </head>
 <body>
     <div class="parent">
@@ -31,7 +31,7 @@
         </div>
         <div class="div3"> </div>
         <div class="div4"> </div>
-        <div class="div5"> </div>
+        <div class="div5"></div>
         <div class="div6"> 
             <div class="inputDivCustom">
                 <h2 class="enterURL">Create Custom URL</h2>  
@@ -49,7 +49,23 @@
                 
             </div>
         </div>
-        <div class="div7"> </div>
+        <div class="div7">
+            <div class="inputDivCustom">
+                <h2 class="enterURL">Statistics</h2>
+                <br>
+                <label class="inputUrlLabel">Short URL end</label>
+                <input type="text" id="satisticInput" class="urlInputCustom">   
+                <br><br>   
+                <input type="month" id="satisticInputMonth" class="urlInputCustom" min="2020-01" max="2030" value="2021-11">     
+                <button type="button" id="getStatisticsMonth" class="standartButton">Get Statistics This Month</button> 
+                <br><br>
+                <input type="number" id="satisticInputYear" class="urlInputCustom" min="2020" max="2030" placeholder="2021">     
+                <button type="button" id="getStatisticsYear" class="standartButton">Get Statistics This Year</button> 
+                <br><br>                
+            </div>            
+        </div>
+        <div class="div8"><div id="chartContainer" style="height: 200px; width: 90%;position:relative;margin: auto;margin-top: 10px;"></div>  </div>
+        
         </div>
 </body>
 </html>
