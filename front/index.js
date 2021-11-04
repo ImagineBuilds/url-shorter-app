@@ -9,7 +9,9 @@ async function getInfo(shortUrl) {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error.hasOwnProperty("data")
+      ? error.response.data
+      : "Connection problem";
   }
 }
 
@@ -20,7 +22,9 @@ async function getShortUrl(fullUrl) {
     });
     return response.data.shorturlId;
   } catch (error) {
-    console.log(error);
+    throw error.hasOwnProperty("data")
+      ? error.response.data
+      : "Connection problem";
   }
 }
 
@@ -33,18 +37,25 @@ async function getCustomShortUrl(fullUrl, custom) {
         custom: custom,
       }
     );
-    console.log(response.data);
+    console.log(response);
     return response.data.custom;
   } catch (error) {
-    console.log(error);
+    throw error.hasOwnProperty("data")
+      ? error.response.data
+      : "Connection problem";
   }
 }
 
 // ==============================
 // ====== Add Events ============
 // ==============================
+
 document.querySelector("#activate").addEventListener("click", onActivateClick);
 document.querySelector("#copyToClip").addEventListener("click", onCopyClick);
+document
+  .querySelector("#copyToClipCustom")
+  .addEventListener("click", onCopyCustomClick);
+
 document
   .querySelector("#activateCustom")
   .addEventListener("click", onActivateCustomClick);
@@ -58,60 +69,117 @@ document
 // ==============================
 // ====== Event Listeners =======
 // ==============================
+
 async function onActivateClick() {
-  let url = document.querySelector("#url").value;
-  let shortUrl = await getShortUrl(url);
-  document.querySelector("#result").value =
-    "http://localhost:3000/api/shorturl/" + shortUrl;
+  try {
+    resetErrors();
+    let url = document.querySelector("#url").value;
+    let shortUrl = await getShortUrl(url);
+    document.querySelector("#result").value = "";
+    document.querySelector("#result").value =
+      "http://localhost:3000/api/shorturl/" + shortUrl;
+  } catch (error) {
+    if (typeof error === "string") {
+      document.querySelector("#urlError").textContent = "Connection problem";
+    } else {
+      document.querySelector("#urlError").textContent = error.message;
+    }
+  }
 }
+
+function onCopyCustomClick() {
+  copyToClipBoard("resultCustom");
+  resetErrors();
+}
+
 function onCopyClick() {
-  let resultInput = document.querySelector("#result");
+  copyToClipBoard("result");
+  resetErrors();
+}
+
+async function onActivateCustomClick() {
+  try {
+    resetErrors();
+    let url = document.querySelector("#urlCustomInput").value;
+    let custom = document.querySelector("#castonShortUrlInput").value;
+    let short = await getCustomShortUrl(url, custom);
+    document.querySelector("#resultCustom").value = "";
+    document.querySelector("#resultCustom").value =
+      "http://localhost:3000/api/shorturl/" + short;
+  } catch (error) {
+    if (typeof error === "string") {
+      document.querySelector("#customError").textContent = "Connection problem";
+    } else {
+      document.querySelector("#customError").textContent = short.message;
+    }
+  }
+}
+
+async function onStatisticsMonthClick() {
+  try {
+    resetErrors();
+    let shortUrlInfo = await getInfo(
+      document.querySelector("#satisticInput").value
+    );
+    let date = new Date(document.querySelector("#satisticInputMonth").value);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let yearLogsArray = getLogsByYear(shortUrlInfo.redirectEntriesLog, year);
+    let monthName = date.toLocaleString("en-US", { month: "long" });
+    let header = `Entries for year ${year} in ${monthName}`;
+    createChart(header, getColumnsDays, yearLogsArray, year, month);
+  } catch (error) {
+    if (typeof error === "string") {
+      document.querySelector("#statistisError").textContent =
+        "Connection problem";
+    } else {
+      document.querySelector("#statistisError").textContent = error.message;
+    }
+  }
+}
+
+async function onStatisticsYearClick() {
+  try {
+    resetErrors();
+    let shortUrlInfo = await getInfo(
+      document.querySelector("#satisticInput").value
+    );
+    let year = document.querySelector("#satisticInputYear").value;
+    let yearLogArray = getLogsByYear(shortUrlInfo.redirectEntriesLog, year);
+    let header = `Entries for year ${year}`;
+    createChart(header, getColumnsMonth, yearLogArray, year);
+  } catch (error) {
+    if (typeof error === "string") {
+      document.querySelector("#statistisError").textContent =
+        "Connection problem";
+    } else {
+      document.querySelector("#statistisError").textContent = error.message;
+    }
+  }
+}
+
+// ==============================
+// ====== Help Functions ========
+// ==============================
+
+function resetErrors() {
+  document.querySelector("#statistisError").textContent = "";
+  document.querySelector("#customError").textContent = "";
+  document.querySelector("#urlError").textContent = "";
+}
+
+function copyToClipBoard(inputId) {
+  let resultInput = document.querySelector(`#${inputId}`);
   resultInput.select();
   resultInput.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(resultInput.value);
   resultInput.blur();
 }
 
-async function onActivateCustomClick() {
-  let url = document.querySelector("#urlCustomInput").value;
-  let custom = document.querySelector("#castonShortUrlInput").value;
-  let short = await getCustomShortUrl(url, custom);
-  document.querySelector("#resultCustom").value =
-    "http://localhost:3000/api/shorturl/" + short;
-}
-
-async function onStatisticsMonthClick() {
-  let obj = await getInfo(document.querySelector("#satisticInput").value);
-  let date = new Date(document.querySelector("#satisticInputMonth").value);
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  let currentYearArray = obj.redirectEntriesLog.map((date) => {
-    if (new Date(date).getFullYear() === year) return new Date(date);
+function getLogsByYear(logsArray, year) {
+  return logsArray.map((date) => {
+    if (new Date(date).getFullYear() === parseInt(year)) return new Date(date);
   });
-  createChart(
-    `Entries for year ${year} in ${date.toLocaleString("en-US", {
-      month: "long",
-    })}`,
-    getColumnsDays,
-    currentYearArray,
-    year,
-    month
-  );
-}
-
-async function onStatisticsYearClick() {
-  let obj = await getInfo(document.querySelector("#satisticInput").value);
-  let date = new Date(document.querySelector("#satisticInputMonth").value);
-  let year = date.getFullYear();
-  let currentYearArray = obj.redirectEntriesLog.map((date) => {
-    if (new Date(date).getFullYear() === year) return new Date(date);
-  });
-  createChart(
-    `Entries for year ${year}`,
-    getColumnsMonth,
-    currentYearArray,
-    year
-  );
 }
 
 function createChart(

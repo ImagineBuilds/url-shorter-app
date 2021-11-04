@@ -33,10 +33,10 @@ class DataBase {
         fs.writeFileSync(`${this.DB_PATH}/${urlId}.json`, JSON.stringify(info));
         return true;
       } else {
-        throw { error: 403, message: "short url does not exsits" };
+        return { error: 403, message: "short url does not exsits" };
       }
     } catch (error) {
-      return error;
+      return { error: 500, message: error };
     }
   }
 

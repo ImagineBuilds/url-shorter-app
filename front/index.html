@@ -17,51 +17,80 @@
             <h2 class="headerH">Daniel's URL Shorter</h2>
         </div>
         <div class="div2">            
-            <h2 class="enterURL">Please enter URL</h2>    
+            <h2 class="headerLabel">Please enter URL</h2>    
             <br>
-            <div class="inputDiv">
-                <label class="inputUrlLabel">URL</label>
-                <input type="text" id="url" class="urlInput">            
-                <button type="button" id="activate" class="standartButton">activate</button>
-                <br><br>
-                <label class="inputUrlLabel">Shorter</label>
-                <input type="text" class="urlInput" id="result" >
-                <button type="button" id="copyToClip" class="standartButton">Copy to clip</button>
-            </div>                                
+            <table class="urlTable">
+                <tr>                    
+                    <td><label class="inputUrlLabel">URL</label></td>
+                    <td><input type="text" id="url" class="urlInput"></td>
+                    <td><button type="button" id="activate" class="standartButton">activate</button></td>
+                </tr>
+                <tr>
+                    <td class="labelShorter"><label class="inputUrlLabel">Shorter</label></td>
+                    <td><input type="text" class="urlInput" id="result" ></td>
+                    <td><button type="button" id="copyToClip" class="standartButton">Copy to clip</button></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2"><label class="urlError" id="urlError"></label></td>
+                </tr>
+            </table>                       
         </div>
         <div class="div3"> </div>
         <div class="div4"> </div>
         <div class="div5"></div>
         <div class="div6"> 
             <div class="inputDivCustom">
-                <h2 class="enterURL">Create Custom URL</h2>  
+                <h2 class="headerLabel">Create Custom URL</h2>  
                 <br>
-                <label class="inputUrlLabel">URL</label>
-                <input type="text" id="urlCustomInput" class="urlInputCustom">   
-                <br><br>
-                <label class="inputUrlLabel">Custom endpoint</label>
-                <input type="text" id="castonShortUrlInput" class="urlInputCustom">            
-                <button type="button" id="activateCustom" class="standartButton">activate</button> 
-                <br><br>               
-                <label class="inputUrlLabel">Shorter</label>
-                <input type="text" class="urlResultCustom" id="resultCustom" >
-                <button type="button" id="copyToClip" class="standartButton">Copy to clip</button>
-                
+                <table class="customTable">
+                    <tr>
+                        <td><label class="inputUrlLabel">URL</label></td>
+                        <td><input type="text" id="urlCustomInput" class="urlInputCustom"></td>                        
+                    </tr>
+                    <tr>
+                        <td><label class="inputUrlLabel">Custom endpoint</label></td>
+                        <td><input type="text" id="castonShortUrlInput" class="urlInputCustom"></td>
+                        <td><button type="button" id="activateCustom" class="standartButton">activate</button> </td>
+                    </tr>
+                    <tr>
+                        <td><label class="inputUrlLabel">Shorter</label></td>
+                        <td><input type="text" class="urlInputCustom" id="resultCustom" ></td>
+                        <td><button type="button" id="copyToClipCustom" class="standartButton">Copy to clip</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2"><label id="customError" class="customError"></label></td>                        
+                    </tr>
+                </table>               
             </div>
         </div>
         <div class="div7">
             <div class="inputDivCustom">
-                <h2 class="enterURL">Statistics</h2>
+                <h2 class="headerLabel">Statistics</h2>
                 <br>
-                <label class="inputUrlLabel">Short URL end</label>
-                <input type="text" id="satisticInput" class="urlInputCustom">   
-                <br><br>   
-                <input type="month" id="satisticInputMonth" class="urlInputCustom" min="2020-01" max="2030" value="2021-11">     
-                <button type="button" id="getStatisticsMonth" class="standartButton">Get Statistics This Month</button> 
-                <br><br>
-                <input type="number" id="satisticInputYear" class="urlInputCustom" min="2020" max="2030" placeholder="2021">     
-                <button type="button" id="getStatisticsYear" class="standartButton">Get Statistics This Year</button> 
-                <br><br>                
+                <table class="statistisTable">
+                    <tr>
+                        <td><label class="inputUrlLabel">Short URL end</label></td>
+                        <td><input type="text" id="satisticInput" class="urlInputStatistis">   </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="tdSelectMonth"><label class="inputUrlLabel">Select month</label></td>
+                        <td><input type="month" id="satisticInputMonth" class="urlInputStatistis" min="2020-01" max="2030" value="2021-11">    </td>
+                        <td><button type="button" id="getStatisticsMonth" class="standartButton">Get Statistics This Month</button> </td>
+                        
+                    </tr>
+                    <tr>
+                        <td><label class="inputUrlLabel">Select Year</label></td>
+                        <td><input type="number" id="satisticInputYear" class="urlInputStatistis" min="2020" max="2030" placeholder="2021">   </td>
+                        <td><button type="button" id="getStatisticsYear" class="standartButton">Get Statistics This Year</button> </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2"><label id="statistisError" class="statistisError"></label></td>
+                    </tr>
+                </table>                   
             </div>            
         </div>
         <div class="div8"><div id="chartContainer" style="height: 200px; width: 90%;position:relative;margin: auto;margin-top: 10px;"></div>  </div>
